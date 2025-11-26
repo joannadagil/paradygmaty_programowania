@@ -1,0 +1,263 @@
+\documentclass{article}
+
+% Language setting
+% Replace `english' with e.g. `spanish' to change the document language
+\usepackage[utf8]{inputenc}
+\usepackage[polish]{babel}
+\usepackage[T1]{fontenc}
+
+% Set page size and margins
+% Replace `letterpaper' with `a4paper' for UK/EU standard size
+\usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+% Useful packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+
+\usepackage{listings}
+\lstset{
+  inputencoding=utf8,
+  extendedchars=true,
+  literate=
+    {ą}{{\k{a}}}1
+    {ć}{{\'c}}1
+    {ę}{{\k{e}}}1
+    {ł}{{\l{}}}1
+    {ń}{{\'n}}1
+    {ó}{{\'o}}1
+    {ś}{{\'s}}1
+    {ź}{{\'z}}1
+    {ż}{{\.z}}1
+    {Ą}{{\k{A}}}1
+    {Ć}{{\'C}}1
+    {Ę}{{\k{E}}}1
+    {Ł}{{\L{}}}1
+    {Ń}{{\'N}}1
+    {Ó}{{\'O}}1
+    {Ś}{{\'S}}1
+    {Ź}{{\'Z}}1
+    {Ż}{{\.Z}}1,
+}
+
+\usepackage{xcolor}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+\usepackage{tikz}
+\usepackage{forest}
+\usetikzlibrary{arrows.meta, shapes.geometric, positioning}
+
+
+\title{Your Paper}
+\author{You}
+
+\begin{document}
+
+\textbf{Tytuł ćwiczenia:} Jednostka 2 - Paradygmat proceduralny i strukturalny
+
+\textbf{Autor:} Joanna Dagil
+
+\textbf{Grupa:} TCH-1
+
+\textbf{Data:} 14.10.2025
+
+\section{Cel ćwiczenia}
+
+Celem ćwiczenia jest zapoznanie się z zasadami paradygmatów proceduralnych i strukturalnych. A następnie refaktoryzacja programu imperatywnego z Jednostki 1 do wersji proceduralnej.
+
+
+\section{Przebieg ćwiczenia}
+
+W tym ćwiczeniu posłużę się językiem Python w edytorze Visual Studio Code. W celu wykonania zadań zapoznaję się z tutorialami, a następnie przechodzę do stworzenia plików:
+
+\vspace{2ex}
+
+\textbf{zad1.py} (dla zadania 1 i 2)
+
+\lstinputlisting[language=Python]{zad1.py}
+
+
+
+
+\vspace{3ex}
+
+\textbf{zad3.py} (dla zadania 3)
+
+\lstinputlisting[language=Python]{zad3.py}
+
+
+
+
+Pliki uruchamiam poleceniem 
+
+\begin{lstlisting}
+python zad{N}.py
+\end{lstlisting}
+
+
+
+
+\section{Wyniki działania}
+
+Dla Zadania 1 i 2:
+
+\begin{lstlisting}
+PS C:\Users\asiad\Desktop\paradygmaty\lab02> python zad1.py
+Podaj liczbę elementów: 4
+Podaj liczbę 1: 4.6
+Podaj liczbę 2: 10.6
+Podaj liczbę 3: 5
+Podaj liczbę 4: 7.3
+Posortowane dane: [4.6, 5.0, 7.3, 10.6]
+Mediana vs średnia: 6.15 < 6.875
+Średnia: 6.875, Min: 4.6, Max: 10.6
+\end{lstlisting}
+
+
+Dla Zadania 3:
+
+\begin{lstlisting}
+PS C:\Users\asiad\Desktop\paradygmaty\lab02> python zad3.py
+Podaj liczbę ocen: 3
+Podaj ocenę 1 (0-100): 40
+Podaj ocenę 2 (0-100): 30
+Podaj ocenę 3 (0-100): 10
+Oceny powyżej średniej posortowane malejąco: 40 30 
+Liczba ocen powyżej średniej: 2
+PS C:\Users\asiad\Desktop\paradygmaty\lab02> python zad3.py
+Podaj liczbę ocen: 4
+Podaj ocenę 1 (0-100): 50
+Podaj ocenę 2 (0-100): 40
+Podaj ocenę 3 (0-100): 30
+Podaj ocenę 4 (0-100): 40
+Oceny powyżej średniej posortowane malejąco: 50 
+Liczba ocen powyżej średniej: 1
+PS C:\Users\asiad\Desktop\paradygmaty\lab02> python zad3.py
+Podaj liczbę ocen: 0
+Brak danych.
+\end{lstlisting}
+
+\newpage
+
+\section{Schemat wywołań funkcji}
+
+\begin{figure}[h!]
+\centering
+
+% Definicja stylów dla diagramu
+\tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, fill=gray!20]
+\tikzstyle{process} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=blue!10]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+
+\begin{tikzpicture}[node distance=1.7cm]
+
+% Główna funkcja
+\node (main) [startstop] {main()};
+
+% Połączenia funkcji
+\node (wczytaj) [process, below of=main, xshift=-8cm] {wczytaj\_dane()};
+\node (oblicz) [process, below of=main, xshift=-4.8cm] {oblicz\_srednia()};
+\node (min_max) [process, below of=main, xshift=-1.4cm] {znajdz\_min\_max()};
+\node (znajdz) [process, below of=main, xshift=2cm] {znajdz\_mediane()};
+\node (sort) [process, below of=main, xshift=5.2cm] {bubble\_sort()};
+\node (drukuj) [process, right of=main, xshift=3.5cm] {drukuj\_wyniki()};
+
+
+% Strzałki wywołań
+\draw [arrow] (main) -- (wczytaj);
+\draw [arrow] (main) -- (oblicz);
+\draw [arrow] (main) -- (znajdz);
+\draw [arrow] (main) -- (sort);
+\draw [arrow] (main) -- (min_max);
+\draw [arrow] (main) -- (drukuj);
+
+
+% Dodatkowe elementy
+\node (suma) [process, below of=oblicz] {oblicz\_sume()};
+\draw [arrow] (oblicz) -- (suma);
+
+\node (bub) [process, below of=znajdz] {bubble\_sort()};
+\draw [arrow] (znajdz) -- (bub);
+
+
+
+\end{tikzpicture}
+\caption{Schemat blokowy wywołań funkcji w programie proceduralnym zad1.py.}
+\end{figure}
+
+
+\begin{figure}[h!]
+\centering
+
+% Definicja stylów dla diagramu
+\tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, fill=gray!20]
+\tikzstyle{process} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=blue!10]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+
+\begin{tikzpicture}[node distance=1.7cm]
+
+% Główna funkcja
+\node (main) [startstop] {main()};
+
+% Połączenia funkcji
+\node (wczytaj) [process, below of=main, xshift=-6cm] {wczytaj\_dane()};
+\node (oblicz) [process, below of=main, xshift=-2.2cm] {oblicz\_srednia()};
+\node (sort) [process, below of=main, xshift=1.8cm] {bubble\_sort\_malejący()};
+\node (drukuj) [process, below of=main, xshift=6cm] {drukuj\_wyniki()};
+
+% Strzałki wywołań
+\draw [arrow] (main) -- (wczytaj);
+\draw [arrow] (main) -- (oblicz);
+\draw [arrow] (main) -- (sort);
+\draw [arrow] (main) -- (drukuj);
+
+% Dodatkowe elementy
+\node (suma) [process, below of=oblicz] {oblicz\_sume()};
+\draw [arrow] (oblicz) -- (suma);
+
+
+
+\end{tikzpicture}
+\caption{Schemat blokowy wywołań funkcji w programie strukturalnym zad3.py.}
+\end{figure}
+
+\section{Porównanie wersji imperatywnej i proceduralnej}
+
+Wersja imperatywna programu opiera się na sekwencyjnym wykonywaniu instrukcji – program składa się głównie z ciągu poleceń modyfikujących zmienne i sterujących przepływem wykonania (np. poprzez pętle i instrukcje warunkowe). W takiej formie kod często ma charakter liniowy, co utrudnia jego czytelność, ponowne wykorzystanie fragmentów oraz utrzymanie w przypadku rozbudowy programu. Logika działania jest bezpośrednio „zaszyta” w głównym bloku programu.
+
+Natomiast wersja strukturalna (proceduralna) wprowadza podział programu na mniejsze, logiczne jednostki – funkcje (procedury). Każda z nich realizuje określone zadanie, a główna funkcja \texttt{main()} koordynuje ich wywołania. Dzięki temu kod staje się bardziej przejrzysty, modularny i łatwiejszy w testowaniu oraz modyfikacji. W przypadku błędów lub potrzeby zmian wystarczy poprawić jedną funkcję, bez konieczności ingerencji w cały program.
+
+Pod względem działania obie wersje realizują ten sam cel, jednak strukturalna forma pozwala na lepszą organizację kodu i w teorii eliminuje powtarzanie fragmentów.
+
+\section{Wnioski}
+
+Paradygmat proceduralny jest rozszerzeniem paradygmatu imperatywnego. Zwiększa czytelność i ułatwia podział zadań. Pozwala także na łatwiejszy przyszły rozwój oprogramowania - można edytować tylko poszczególną funkcję, bez ingerencji w cały kod. 
+
+Jednocześnie nie jest to wziąć paradygmat wprowadzający niepotrzebnie złożoną strukturę, nawet w najprostszych programach i jest wygodny do małych i średnich projektów.
+
+\end{document}

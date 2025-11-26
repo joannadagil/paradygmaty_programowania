@@ -1,0 +1,208 @@
+\documentclass{article}
+
+% Language setting
+% Replace `english' with e.g. `spanish' to change the document language
+\usepackage[utf8]{inputenc}
+\usepackage[polish]{babel}
+\usepackage[T1]{fontenc}
+
+% Set page size and margins
+% Replace `letterpaper' with `a4paper' for UK/EU standard size
+\usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+% Useful packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+
+\usepackage{listings}
+\lstset{
+  inputencoding=utf8,
+  extendedchars=true,
+  literate=
+    {ą}{{\k{a}}}1
+    {ć}{{\'c}}1
+    {ę}{{\k{e}}}1
+    {ł}{{\l{}}}1
+    {ń}{{\'n}}1
+    {ó}{{\'o}}1
+    {ś}{{\'s}}1
+    {ź}{{\'z}}1
+    {ż}{{\.z}}1
+    {Ą}{{\k{A}}}1
+    {Ć}{{\'C}}1
+    {Ę}{{\k{E}}}1
+    {Ł}{{\L{}}}1
+    {Ń}{{\'N}}1
+    {Ó}{{\'O}}1
+    {Ś}{{\'S}}1
+    {Ź}{{\'Z}}1
+    {Ż}{{\.Z}}1,
+}
+
+\usepackage{xcolor}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+\usepackage{tikz}
+\usetikzlibrary{trees}
+\usepackage{forest}
+\usetikzlibrary{arrows.meta, shapes.geometric, positioning}
+
+
+\title{Your Paper}
+\author{You}
+
+\begin{document}
+
+\textbf{Tytuł ćwiczenia:} Jednostka 3 - Paradygmat modularny
+
+\textbf{Autor:} Joanna Dagil
+
+\textbf{Grupa:} TCH-1
+
+\textbf{Data:} 21.10.2025
+
+\section{Cel ćwiczenia}
+
+Celem ćwiczenia jest zapoznanie się z zasadami paradygmatu modularnego. A następnie refaktoryzacja programu proceduralnego z Jednostki 2 do wersji modularnej i dodanie dodatkowych funkcjonalności.
+
+
+\section{Przebieg ćwiczenia}
+
+W tym ćwiczeniu posłużę się językiem Python w edytorze Visual Studio Code. W celu wykonania zadań zapoznaję się z tutorialami, a następnie przechodzę do stworzenia plików:
+
+\vspace{2ex}
+
+\textbf{main.py}
+
+\lstinputlisting[language=Python]{main.py}
+\textbf{stats.py}
+\lstinputlisting[language=Python]{stats.py}
+\textbf{sorting.py}
+\lstinputlisting[language=Python]{sorting.py}
+\textbf{utils.py}
+\lstinputlisting[language=Python]{utils.py}
+\textbf{analityka.py}
+\lstinputlisting[language=Python]{analityka.py}
+\textbf{raport.py}
+\lstinputlisting[language=Python]{raport.py}
+
+
+Program uruchamiam poleceniem 
+
+\begin{lstlisting}
+python main.py
+\end{lstlisting}
+
+
+
+
+\section{Wyniki działania}
+
+Dla Zadania 1 i 2:
+
+\begin{lstlisting}
+PS C:\Users\asiad\Desktop\paradygmaty\lab03> python main.py
+Podaj liczbę elementów: 2
+Podaj liczbę 1: 3
+Podaj liczbę 2: 7
+Posortowane dane: [3.0, 7.0]
+Mediana vs średnia: 5.0 = 5.0
+Średnia: 5.0, Min: 3.0, Max: 7.0
+Mediana: 5.0, Odchylenie standardowe: 2.0
+PS C:\Users\asiad\Desktop\paradygmaty\lab03> python main.py
+Podaj liczbę elementów: 5
+Podaj liczbę 1: 345
+Podaj liczbę 2: 7657
+Podaj liczbę 3: 45
+Podaj liczbę 4: 4535
+Podaj liczbę 5: 3
+Posortowane dane: [3.0, 45.0, 345.0, 4535.0, 7657.0]
+Mediana vs średnia: 345.0 < 2517.0
+Średnia: 2517.0, Min: 3.0, Max: 7657.0
+Mediana: 345.0, Odchylenie standardowe: 3086.76166880438
+\end{lstlisting}
+
+
+\newpage
+
+\section{Opis modułów}
+
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}
+  \node {main.py}
+    [edge from parent fork right,grow=right, level distance=30mm, sibling distance = 5mm]
+    child {node {utils.py}}
+    child {node {sorting.py}}
+    child {node {stats.py}}
+    child {node {raport.py}}
+    child {node {analityka.py}} {
+    child {node {sorting.py}}
+    child {node {stats.py}}
+    };
+\end{tikzpicture}
+\caption{Diagram zależności modułów.}
+\end{figure}
+
+\subsection{Moduł main.py}
+
+Moduł główny wykorzystujący pozostałe moduły do wczytania danych, obliczenia średniej, wartości maksymalnej i minimalnej, mediany, posortowania danych, wypisania posortowanych danych oraz samodzielnie wypisuje obliczone wartości.
+
+\subsection{Moduł utils.py}
+
+Niezależny moduł zawierający funkcje do wczytania i wypisania danych.
+
+\subsection{Moduł sorting.py}
+
+Niezależny moduł zawierający funkcję sortującą.
+
+\subsection{Moduł stats.py}
+
+Niezależny moduł zawierający funkcje obliczajace sumę, średnią, wartość minimalną i maksymalną
+
+\subsection{Moduł raport.py}
+
+Niezależny moduł zawierający funkcje zapisującą raport z wyników obliczeń do pliku tekstowego.
+
+\subsection{Moduł analityka.py}
+
+Moduł zawierający funkcje obliczające medianę i odchylenie standardowe posiłkując się sortowaniem i obliczaniem wartości średniej.
+
+\section{Wnioski}
+
+Paradygmat modularny opiera się na podziale kodu na oddzielnie przechowywane moduły. Jest on kolejnym krokiem rozbudowy programu, tak jak paradygmat proceduralny podzielił paradygmat imperatywny na procedury, to paradygmat modularny rozdziela te procedury do oddzielnych plików.
+
+Umożliwia to jeszcze sprawniejszą pracę w zespole nad jednym projektem. Zespoły mogą równolegle pracować nad różnymi modułami minimalizując konflikty.
+Po ustaleniu co dokładnie wejścia i wyjścia konkretnych funkcji każdy może zaczynać pracę nad swoim modułem niezależnie.
+
+Dodatkowo, sprzyja to ponownemu użyciu już stworzonych modułów w różnych projektach. Z jasno określonym interfejsem modułów możliwe jest wielokrotne wykorzystywanie tych samych fragmentów kodu.
+
+Ten paradygmat można stosować już nawet do dużych projektów.
+
+\end{document}

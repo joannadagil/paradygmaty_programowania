@@ -1,0 +1,306 @@
+\documentclass{article}
+
+% Language setting
+% Replace `english' with e.g. `spanish' to change the document language
+\usepackage[utf8]{inputenc}
+\usepackage[polish]{babel}
+\usepackage[T1]{fontenc}
+
+\usepackage{array}
+\usepackage{booktabs}
+
+% Set page size and margins
+% Replace `letterpaper' with `a4paper' for UK/EU standard size
+\usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+% Useful packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+
+\usepackage{float}
+
+
+\usepackage{listings}
+\lstset{
+  inputencoding=utf8,
+  extendedchars=true,
+  literate=
+    {ą}{{\k{a}}}1
+    {ć}{{\'c}}1
+    {ę}{{\k{e}}}1
+    {ł}{{\l{}}}1
+    {ń}{{\'n}}1
+    {ó}{{\'o}}1
+    {ś}{{\'s}}1
+    {ź}{{\'z}}1
+    {ż}{{\.z}}1
+    {Ą}{{\k{A}}}1
+    {Ć}{{\'C}}1
+    {Ę}{{\k{E}}}1
+    {Ł}{{\L{}}}1
+    {Ń}{{\'N}}1
+    {Ó}{{\'O}}1
+    {Ś}{{\'S}}1
+    {Ź}{{\'Z}}1
+    {Ż}{{\.Z}}1,
+}
+
+\usepackage{xcolor}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+\usepackage{tikz}
+\usetikzlibrary{trees}
+\usepackage{forest}
+\usetikzlibrary{arrows.meta, shapes.geometric, positioning}
+
+\usepackage{authblk}
+
+
+\title{Jednostka 8 - Paradygmat deklaratywny}
+\author{Joanna Dagil}
+\affil{Grupa TCH-1}
+
+\begin{document}
+
+\maketitle
+
+\section{Cel ćwiczenia}
+
+Celem ćwiczenia jest zapoznanie się z paradygmatem deklaratywnym i porównanie go z programowaniem imperatywnym i funkcyjnym. Wykorzystujemy do tego język SQL i Prolog.
+
+
+\section{Zadania}
+
+\subsection{Zadanie 1}
+
+Tworzenie struktury tabeli.
+\lstinputlisting[language=Python]{1structure.sql}
+
+Wgrywanie przykładowych danych do tabeli.
+\lstinputlisting[language=Python]{1data.sql}
+
+Zapytania.
+\lstinputlisting[language=Python]{1usage.sql}
+
+Wyniki zapytań.
+
+\begin{lstlisting}
++----+-----------+------------+------+-------------+
+| id | imie      | nazwisko   | rok  | kierunek    |
++----+-----------+------------+------+-------------+
+|  2 | Jan       | Nowak      |    3 | Informatyka |
+|  4 | Krzysztof | Malinowski |    3 | Informatyka |
++----+-----------+------------+------+-------------+
+2 rows in set (0.00 sec)
+
++-----------+-------------+--------------+
+| imie      | nazwisko    | srednia_ocen |
++-----------+-------------+--------------+
+| Anna      | Kowalska    |      4.75000 |
+| Jan       | Nowak       |      3.75000 |
+| Maria     | Wisniewska  |      4.00000 |
+| Krzysztof | Malinowski  |      4.75000 |
++-----------+-------------+--------------+
+4 rows in set (0.00 sec)
+
++-----------+------------+--------------+
+| imie      | nazwisko   | srednia_ocen |
++-----------+------------+--------------+
+| Anna      | Kowalska   |      4.75000 |
+| Krzysztof | Malinowski |      4.75000 |
++-----------+------------+--------------+
+2 rows in set (0.00 sec)
+\end{lstlisting}
+
+
+\subsection{Zadanie 2}
+
+Tworzenie faktów \texttt{rodzic(dorosły, dziecko)}
+
+\begin{lstlisting}
+rodzic(jan, anna).
+rodzic(jan, piotr).
+rodzic(anna, kasia).
+rodzic(anna, bartek).
+rodzic(piotr, ola).
+rodzic(piotr, tomek).
+rodzic(maria, jan).
+rodzic(maria, ewa).
+\end{lstlisting}
+
+Tworzenie reguły \texttt{dziecko/2}
+
+\begin{lstlisting}
+dziecko(Dziecko, Rodzic) :-
+    rodzic(Rodzic, Dziecko).
+\end{lstlisting}
+
+Tworzenie reguł \texttt{przodek/2}
+
+Przodek może być albo bezpośrednio rodzicem potomka, albo rekurencyjnie rodzicem przodka potomka.
+
+\begin{lstlisting}
+przodek(Przodek, Potomek) :-
+    rodzic(Przodek, Potomek).
+
+przodek(Przodek, Potomek) :-
+    rodzic(Przodek, Posrednik),
+    przodek(Posrednik, Potomek).
+\end{lstlisting}
+
+Przykłady zapytań prezentujące funkcjonowanie relacji rodzinnych
+
+Kto jest rodzicem anny?
+\begin{lstlisting}
+?- rodzic(Kto, anna).
+Kto = jan.
+\end{lstlisting}
+Kto jest dzieckiem anny?
+\begin{lstlisting}
+?- dziecko(Kto, anna).
+Kto = kasia ;
+Kto = bartek.
+\end{lstlisting}
+Czy jan jest przodkiem tomka?
+\begin{lstlisting}
+?- przodek(jan, tomek).
+true.
+\end{lstlisting}
+Czy tomek jest przodkiem jana?
+\begin{lstlisting}
+?- przodek(tomek, jan).     
+false.
+\end{lstlisting}
+Kto jest przodkiem tomka?
+\begin{lstlisting}
+?- przodek(Kto, tomek).
+Kto = piotr ;
+Kto = jan ;
+Kto = maria.
+\end{lstlisting}
+
+\subsection{Zadanie 3}
+
+Tworzenie faktów \texttt{studiuje(osoba, kierunek)}
+
+\begin{lstlisting}
+studiuje(hela, informatyka).
+studiuje(asia, informatyka).
+studiuje(fela, informatyka).
+studiuje(olaf, informatyka).
+studiuje(anna, matematyka).
+studiuje(paul, matematyka).
+studiuje(alek, matematyka).
+\end{lstlisting}
+
+Tworzenie reguły \texttt{studiowany/2}
+
+\begin{lstlisting}
+studiowany(Kierunek, Osoba) :-
+    studiuje(Osoba, Kierunek).
+\end{lstlisting}
+
+Tworzenie faktów \texttt{prowadzi(osoba, kierunek)}
+
+\begin{lstlisting}
+prowadzi(adam, informatyka).
+prowadzi(asia, matematyka).
+\end{lstlisting}
+
+Tworzenie reguły \texttt{prowadzony/2}
+
+\begin{lstlisting}
+prowadzony(Kierunek, Osoba) :-
+    prowadzi(Osoba, Kierunek).
+\end{lstlisting}
+
+Tworzenie reguły \texttt{prowadzacy\_studenta/2}
+
+\begin{lstlisting}
+prowadzacy_studenta(Prowadzacy, Student) :-
+    prowadzi(Prowadzacy, Kierunek),
+    studiuje(Student, Kierunek).
+\end{lstlisting}
+
+Zapytanie "Kto jest prowadzącym studenta \texttt{alek}?"
+
+\begin{lstlisting}
+?- prowadzacy_studenta(Kto, alek).
+Kto = asia.
+\end{lstlisting}
+
+
+
+
+\section{Wnioski}
+
+Porównanie rozwiązań deklaratywnych i imperatywnych/funkcyjnych:
+
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{p{3cm} p{5.5cm} p{5.5
+cm}}
+\toprule
+\textbf{Kryterium} & \textbf{Deklaratywne} & \textbf{Imperatywne/funkcyjne} \\
+\midrule
+
+\textbf{Sposób myślenia} 
+& Myślimy w kategoriach faktów, reguł i własności, które mają być spełnione (\emph{co ma być prawdą?}) 
+& Myślimy w kategoriach kroków algorytmu i przekształceń danych (\emph{jak to policzyć?}) \\
+
+\textbf{Sposób opisu} 
+& Fakty, reguły, zapytania; program to baza wiedzy i aparat wnioskowania 
+& Funkcje, procedury, metody; program to zbiór instrukcji i definicji operujących na danych \\
+
+\textbf{Przepływ} 
+& Kolejność wykonania jest w dużej mierze ukryta – mechanizm wnioskowania steruje obliczeniami 
+& Kolejność jest jawnie kontrolowana przez programistę (instrukcje, wywołania funkcji, pętle, rekursja) \\
+
+\textbf{Wiele rozwiązań} 
+& Naturalnie wspiera szukanie wszystkich wartości spełniających warunki jednego zapytania (wiele odpowiedzi na to samo pytanie) 
+& Zwykle zwraca jedną wartość dla danego zestawu argumentów; wiele rozwiązań wymaga jawnego kodu (np. dodatkowych struktur danych) \\
+
+\textbf{Powiązania między danymi} 
+& Relacje między obiektami są centralne (predykaty typu \texttt{rodzic/2}, \texttt{student/3}); łatwo wyrażać złożone zależności i zapytania 
+& Relacje trzeba zaszyć w strukturach danych i logice funkcji; zapytania są implementowane jako zwykły kod \\
+
+
+\textbf{Zastosowania} 
+& Systemy eksperckie, logika, wnioskowanie, zapytania do baz danych, zadania typu „znajdź wszystkie obiekty spełniające warunki” 
+& Algorytmy numeryczne, przetwarzanie sygnałów, aplikacje interaktywne, systemy wbudowane, typowe programy użytkowe \\
+
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+
+
+\end{document}
