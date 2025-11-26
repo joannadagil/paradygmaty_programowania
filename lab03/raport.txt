@@ -1,0 +1,7 @@
+Raport:
+Srednia: 2517.0
+Min: 3.0
+Max: 7657.0
+Mediana: 345.0
+Odchylenie standardowe: 3086.76166880438
+Mediana vs srednia: 345.0 < 2517.0
