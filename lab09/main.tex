@@ -1,0 +1,260 @@
+\documentclass{article}
+
+% Language setting
+% Replace `english' with e.g. `spanish' to change the document language
+\usepackage[utf8]{inputenc}
+\usepackage[polish]{babel}
+\usepackage[T1]{fontenc}
+
+\usepackage{array}
+\usepackage{booktabs}
+
+% Set page size and margins
+% Replace `letterpaper' with `a4paper' for UK/EU standard size
+\usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+% Useful packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+
+\usepackage{float}
+
+
+\usepackage{listings}
+\lstset{
+  inputencoding=utf8,
+  extendedchars=true,
+  literate=
+    {ą}{{\k{a}}}1
+    {ć}{{\'c}}1
+    {ę}{{\k{e}}}1
+    {ł}{{\l{}}}1
+    {ń}{{\'n}}1
+    {ó}{{\'o}}1
+    {ś}{{\'s}}1
+    {ź}{{\'z}}1
+    {ż}{{\.z}}1
+    {Ą}{{\k{A}}}1
+    {Ć}{{\'C}}1
+    {Ę}{{\k{E}}}1
+    {Ł}{{\L{}}}1
+    {Ń}{{\'N}}1
+    {Ó}{{\'O}}1
+    {Ś}{{\'S}}1
+    {Ź}{{\'Z}}1
+    {Ż}{{\.Z}}1,
+}
+
+\usepackage{xcolor}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+\usepackage{tikz}
+\usetikzlibrary{trees}
+\usepackage{forest}
+\usetikzlibrary{arrows.meta, shapes.geometric, positioning}
+
+\usepackage{authblk}
+
+
+\title{Jednostka 9 - Paradygmat logiczny}
+\author{Joanna Dagil}
+\affil{Grupa TCH-1}
+
+\begin{document}
+
+\maketitle
+
+\section{Cel ćwiczenia}
+
+Celem ćwiczenia jest zapoznanie się ze złożonymi zapytaniami, backtrackingiem i unifikacją w paradygmacie logicznym. Wykorzystujemy do tego język Prolog, w którym pokrywamy także zagadnienia takie jak rekurencja, struktury danych i operacje na nich.
+
+\section{Zadania}
+
+\subsection{Zadanie 1}
+
+Tworzenie faktów \texttt{dziecko/2}
+
+\begin{lstlisting}
+dziecko(hela, anna).
+dziecko(asia, anna).
+dziecko(anna, olaf).
+dziecko(paul, alek).
+dziecko(fela, alek).
+dziecko(alek, olaf).
+dziecko(olaf, mela).
+\end{lstlisting}
+
+Diagram rodziny
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.5\textwidth]{1.png}
+\end{figure}
+
+Tworzenie reguły \texttt{rodzeństwo/2}
+
+\begin{lstlisting}
+rodzenstwo(A, B) :- dziecko(A, Rodzic), dziecko(B, Rodzic).
+\end{lstlisting}
+
+Tworzenie reguły \texttt{dziadek/2}
+
+Między dziadkiem a wnukiem musi być jedna instancja pośrednika - rodzica. 
+
+\begin{lstlisting}
+dziadek(Dziadek, Wnuk) :- dziecko(Rodzic, Dziadek), rodzic(Wnuk, Rodzic).
+\end{lstlisting}
+
+Tworzenie reguł \texttt{przodek/2}
+
+Przodek może być albo bezpośrednio rodzicem potomka, albo rekurencyjnie rodzicem przodka potomka.
+
+\begin{lstlisting}
+przodek(Przodek, Potomek) :- dziecko(Potomek, Przodek).
+przodek(Przodek, Potomek) :- dziecko(Posrednik, Przodek), przodek(Posrednik, Potomek).
+\end{lstlisting}
+
+\subsubsection{Przykłady zapytań prezentujące funkcjonowanie relacji rodzinnych}
+
+Czy mela jest przodkiem feli?
+\begin{lstlisting}
+?- przodek(mela, fela).
+true .
+\end{lstlisting}
+Jakich przodków ma fela?
+\begin{lstlisting}
+?- przodek(Kto, fela).
+Kto = alek ;
+Kto = olaf ;
+Kto = mela .
+\end{lstlisting}
+Czyim przodkiem jest olaf?
+\begin{lstlisting}
+przodek(olaf, Kto).      
+Kto = anna ;
+Kto = alek ;
+Kto = hela ;
+Kto = asia ;
+Kto = paul ;
+Kto = fela .
+\end{lstlisting}
+Czy alek jest przodkiem olafa?
+\begin{lstlisting}
+?- przodek(alek, olaf).     
+false.
+\end{lstlisting}
+
+
+
+
+
+
+\subsection{Zadanie 2}
+
+Reguła \texttt{nalezy/2}
+
+\begin{lstlisting}
+nalezy(A, [A|_]).
+nalezy(A, [_|T]) :- nalezy(A, T).
+\end{lstlisting}
+
+Regułą \texttt{dlugosc/2}
+
+\begin{lstlisting}
+dlugosc([], 0).
+dlugosc([_|T], N) :- dlugosc(T, N2), N is N2 + 1.
+\end{lstlisting}
+
+\subsubsection{Przykłady zapytań prezentujące funkcjonowanie powyższych reguł}
+
+\begin{lstlisting}
+?- nalezy(3, [1,2,3,4]).
+true.
+
+?- nalezy(5, [1,2,3,4]).
+false.
+
+?- dlugosc([], N).
+N = 0.
+
+?- dlugosc([a,b,c,d], N).
+N = 4.
+\end{lstlisting}
+
+\subsection{Zadanie 3}
+
+Tworzenie grafu. \texttt{krawedz/2)}
+
+\begin{lstlisting}
+krawedz(1, 2).
+krawedz(2, 3).
+krawedz(3, 4).
+
+krawedz(5, 6).
+krawedz(6, 7).
+studiuje(alek, matematyka).
+\end{lstlisting}
+
+Diagram grafu
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{2.png}
+\end{figure}
+
+Tworzenie reguły \texttt{sciezka/3}
+
+\begin{lstlisting}
+sciezka(Start, End, [Start, End]) :- krawedz(Start, End).
+sciezka(Start, End, [Start|Tail]) :- krawedz(Start, X), sciezka(X, End, Tail).
+\end{lstlisting}
+
+
+\subsubsection{Przykłady zapytań prezentujące funkcjonowanie powyższych reguł}
+
+\begin{lstlisting}
+?- sciezka(1, 3, P).
+P = [1, 2, 3].
+
+?- sciezka(1, 2, P).
+P = [1, 2].
+
+?- sciezka(1, 5, P).
+false.
+\end{lstlisting}
+
+
+\section{Wnioski}
+
+
+Backtracking miał bezpośredni wpływ na sposób uzyskiwania wyników -- po zadaniu jednego zapytania Prolog automatycznie szukał kolejnych rozwiązań i po wciśnięciu \texttt{;} zwracał następne możliwe dopasowania. Było to wyraźnie widoczne przy wyszukiwaniu wszystkich przodków danej osoby oraz wszystkich ścieżek w grafie. Z jednej strony ułatwia to eksplorację wielu rozwiązań, z drugiej wymaga ostrożnego definiowania reguł (np. unikania cykli w grafie), aby obliczenia nie zapętlały się.
+
+
+Unifikacja decydowała o tym, czy dane wywołanie predykatu pasuje do faktu lub reguły. Przy zapytaniach takich jak \texttt{przodek(Kto, fela)} czy \texttt{sciezka(1, 3, P)} Prolog automatycznie podstawiał wartości za zmienne tak, aby lewa i prawa strona dopasowania były zgodne. Dzięki temu nie trzeba ręcznie „przechodzić” po strukturach danych -- wystarczy zdefiniować ogólny wzorzec, a unifikacja zajmowała się doborem konkretnych wartości i wiązaniem zmiennych.
+\end{document}
