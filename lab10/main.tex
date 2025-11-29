@@ -1,0 +1,231 @@
+\documentclass{article}
+
+% Language setting
+% Replace `english' with e.g. `spanish' to change the document language
+\usepackage[utf8]{inputenc}
+\usepackage[polish]{babel}
+\usepackage[T1]{fontenc}
+
+\usepackage{array}
+\usepackage{booktabs}
+
+% Set page size and margins
+% Replace `letterpaper' with `a4paper' for UK/EU standard size
+\usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+% Useful packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+
+\usepackage{float}
+
+
+\usepackage{listings}
+\lstset{
+  inputencoding=utf8,
+  extendedchars=true,
+  literate=
+    {ą}{{\k{a}}}1
+    {ć}{{\'c}}1
+    {ę}{{\k{e}}}1
+    {ł}{{\l{}}}1
+    {ń}{{\'n}}1
+    {ó}{{\'o}}1
+    {ś}{{\'s}}1
+    {ź}{{\'z}}1
+    {ż}{{\.z}}1
+    {Ą}{{\k{A}}}1
+    {Ć}{{\'C}}1
+    {Ę}{{\k{E}}}1
+    {Ł}{{\L{}}}1
+    {Ń}{{\'N}}1
+    {Ó}{{\'O}}1
+    {Ś}{{\'S}}1
+    {Ź}{{\'Z}}1
+    {Ż}{{\.Z}}1,
+}
+
+\usepackage{xcolor}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+\usepackage{tikz}
+\usetikzlibrary{trees}
+\usepackage{forest}
+\usetikzlibrary{arrows.meta, shapes.geometric, positioning}
+
+\usepackage{authblk}
+
+
+\title{Jednostka 10 - Paradygmat współbieżny i równoległy}
+\author{Joanna Dagil}
+\affil{Grupa TCH-1}
+
+\begin{document}
+
+\maketitle
+
+\section{Cel ćwiczenia}
+
+Celem ćwiczenia jest zapoznanie się z programowaniem współbieżnym i równoległym i różnicami między nimi. Wykorzystujemy wątki, procesy i różne mechanizmy synchronizacji - zamki, kolejki multiprocesowe. Rozwiązujemy też typowe problemy dla współbieżnych programów - wyścigi danych, komunikacje.
+
+\section{Zadania}
+
+\subsection*{Zadanie 1}
+
+Posłużyłam się kodem z tutorialu "Przetwarzanie danych w wielu wątkach",  dodając \texttt{lock} na zmienną \texttt{total}. Umożliwiło to ograniczenie dostępu do niej jednemu wątkowi naraz.
+
+\lstinputlisting[language=Python]{1.py}
+
+Wyniki:
+
+\begin{lstlisting}
+Suma wszystkich elementów: 499999500000
+Czas wykonania: 0.017713546752929688
+\end{lstlisting}
+
+\subsection*{Zadanie 2}
+
+Mechanizmem synchronizacji w tym zadaniu jest obiekt \texttt{multiprocessing.Queue}, dzięki, któremu nie dojdzie do pominięcia, żadnej części wyniku.
+
+\lstinputlisting[language=Python]{2.py}
+
+Wyniki:
+
+\begin{lstlisting}
+Suma wszystkich elementów: 499999500000
+Czas wykonania: 1.036818504333496
+\end{lstlisting}
+
+
+
+\subsection*{Zadanie 3}
+
+\lstinputlisting[language=Python]{3.py}
+
+Przykładowy wynik:
+
+\begin{lstlisting}
+Starting client 0
+Starting client 1
+Starting client 2
+Starting client 3
+Starting client 4
+Starting client 5
+Starting client 6
+Client 0 processing work: 8
+Client 2 processing work: 9
+Client 4 processing work: 10
+Client 3 processing work: 1
+Server processing work: 8 from client 0
+Server processing work: 10 from client 4
+Client 0 received result: 64 for work: 8
+Client 0 processing work: 4
+Server processing work: 9 from client 2
+Client 4 received result: 100 for work: 10
+Client 4 processing work: 10
+Server processing work: 1 from client 3
+Client 2 received result: 81 for work: 9
+Client 2 processing work: 8
+Server processing work: 4 from client 0
+Client 3 received result: 1 for work: 1
+Client 3 processing work: 2
+Client 0 received result: 16 for work: 4
+Server processing work: 10 from client 4
+Client 0 finished.
+Server processing work: 8 from client 2
+Client 4 received result: 100 for work: 10
+Client 4 finished.
+Client 2 received result: 64 for work: 8
+Server processing work: 2 from client 3
+Client 2 finished.
+Client 3 received result: 4 for work: 2
+Client 3 finished.
+Client 5 processing work: 7
+Client 6 processing work: 6
+Server processing work: 7 from client 5
+Server processing work: 6 from client 6
+Client 5 received result: 49 for work: 7
+Client 5 processing work: 3
+Server processing work: 3 from client 5
+Client 6 received result: 36 for work: 6
+Client 5 received result: 9 for work: 3
+Client 5 finished.
+Client 6 processing work: 4
+Server processing work: 4 from client 6
+Client 6 received result: 16 for work: 4
+Client 6 finished.
+Client 1 processing work: 1
+Server processing work: 1 from client 1
+Client 1 received result: 1 for work: 1
+Client 1 processing work: 4
+Server processing work: 4 from client 1
+Client 1 received result: 16 for work: 4
+Client 1 finished.
+All clients have finished.
+\end{lstlisting}
+
+\section{Wnioski}
+
+\subsection{Porównanie czasów wykonania dla zadania 1 i 2}
+
+Dla wersji wątkowej:
+
+\begin{lstlisting}
+Czas wykonania: 0.017713546752929688
+\end{lstlisting}
+
+i wersji procesowej:
+
+\begin{lstlisting}
+Czas wykonania: 1.036818504333496
+\end{lstlisting}
+
+
+W tym konkretnym przypadku wątki okazały się znacznie szybsze. Wynika to zapewne z tego, że uruchomienie procesów ma dużo większy narzut, zapewne też posługiwanie się \texttt{multiprocessing.Queue} jest kosztowne niż mechanizmem \texttt{lock}. Samo zadanie było stosunkowo krótkie, więc narzut związany z procesami był większy niż korzyści obliczeniowe z nich.
+
+\subsection{Potencjalne problemy i ich rozwiązania}
+
+\subsubsection{Race condition}
+
+Przy współdzieleniu zmiennej \texttt{total} między wątkami konieczne było użycie \texttt{Lock}, aby tylko jeden wątek naraz mógł ją modyfikować. Bez tego wynik sumy byłby losowy.
+
+\subsubsection{Synchronizacja procesów}
+
+W wersji procesowej suma częściowych wyników nie mogła być trzymana we wspólnej zmiennej globalnej, dlatego użyta została \texttt{multiprocessing.Queue}, do której każdy proces odkłada swój wynik, a proces główny je sumuje.
+
+\subsubsection{Zagłodzenie}
+
+W żadnych z naszych zadań nie mogło dojść do zagłodzenia procesu, gdyż wszystkie wątki miały konkretną pracę do wykonania i po tym czasie już nie konkurował o procesor.
+
+\subsubsection{Komunikacja klient–serwer}
+
+W zadaniu 3 serwer odbierał zlecenia od wielu klientów przez wspólną kolejkę zadań i odsyłał wyniki przez osobne kolejki odpowiedzi przypisane do konkretnych klientów. Rozwiązanie to pokazuje, jak bezpiecznie wymieniać dane między procesami bez współdzielonej pamięci.
+
+
+\end{document}
