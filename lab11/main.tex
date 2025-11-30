@@ -1,0 +1,191 @@
+\documentclass{article}
+
+% Language setting
+% Replace `english' with e.g. `spanish' to change the document language
+\usepackage[utf8]{inputenc}
+\usepackage[polish]{babel}
+\usepackage[T1]{fontenc}
+
+\usepackage{array}
+\usepackage{booktabs}
+
+% Set page size and margins
+% Replace `letterpaper' with `a4paper' for UK/EU standard size
+\usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+% Useful packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+
+\usepackage{float}
+
+
+\usepackage{listings}
+\lstset{
+  inputencoding=utf8,
+  extendedchars=true,
+  literate=
+    {ą}{{\k{a}}}1
+    {ć}{{\'c}}1
+    {ę}{{\k{e}}}1
+    {ł}{{\l{}}}1
+    {ń}{{\'n}}1
+    {ó}{{\'o}}1
+    {ś}{{\'s}}1
+    {ź}{{\'z}}1
+    {ż}{{\.z}}1
+    {Ą}{{\k{A}}}1
+    {Ć}{{\'C}}1
+    {Ę}{{\k{E}}}1
+    {Ł}{{\L{}}}1
+    {Ń}{{\'N}}1
+    {Ó}{{\'O}}1
+    {Ś}{{\'S}}1
+    {Ź}{{\'Z}}1
+    {Ż}{{\.Z}}1,
+}
+
+\usepackage{xcolor}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+\usepackage{tikz}
+\usetikzlibrary{trees}
+\usepackage{forest}
+\usetikzlibrary{arrows.meta, shapes.geometric, positioning}
+
+\usepackage{authblk}
+
+
+\title{Jednostka 11 - Paradygmat zdarzeniowy i reaktywny}
+\author{Joanna Dagil}
+\affil{Grupa TCH-1}
+
+\begin{document}
+
+\maketitle
+
+\section{Cel ćwiczenia}
+
+Celem ćwiczenia jest zapoznanie się z podstawami paradygmatu zdarzeniowego i reaktywnego. W szczególności oddzielenie źródła zdarzeń od ich obsługi (handlery, obserwatorzy, funkcje przetwarzające strumień). 
+
+
+\section{Zadania}
+
+\subsection*{Zadanie 1}
+
+\lstinputlisting[language=Python]{1.py}
+
+Przykładowy przebieg programu:
+
+\begin{lstlisting}
+Uwaga! Huragan o poziomie 24!
+Uwaga! Pożar o poziomie 12!
+Uwaga! Huragan o poziomie 18!
+Uwaga! Pożar o poziomie 28!
+Uwaga! Pożar o poziomie 32!
+Uwaga! Burza o poziomie 59!
+\end{lstlisting}
+
+\subsection*{Zadanie 2}
+
+
+\lstinputlisting[language=Python]{2.py}
+
+Przykładowy przebieg programu:
+
+\begin{lstlisting}
+[LOG]
+[UI] Aktualizacja danych:
+     Temperatura: 27°C
+     Wilgotność: 57%
+     Ciśnienie: 1031 hPa
+[LOG]
+[Alarm] Temperatura przekroczyła 30°C
+[Alarm] Wilgotność spadła poniżej 20%
+[UI] Aktualizacja danych:
+     Temperatura: 37°C
+     Wilgotność: 7%
+     Ciśnienie: 986 hPa
+\end{lstlisting}
+
+
+
+\subsection*{Zadanie 3}
+
+\lstinputlisting[language=Python]{3.py}
+
+Przykładowy przebieg programu:
+
+\begin{lstlisting}
+973
+651
+535
+\end{lstlisting}
+
+\section{Wnioski}
+
+
+\subsection{Zalety podejścia zdarzeniowego}
+
+\begin{itemize}
+    \item \textbf{Modularność i luźne powiązanie} -- nowe handlery lub obserwatorów można łatwo dopinać lub odłączać bez zmiany kodu źródła zdarzeń. W zadaniu 1 wystarczy zarejestrować kolejną funkcję w \texttt{EventEmitter}, a w zadaniu 2 dodać nową klasę obserwatora, aby reagować na dodatkowe warunki pogodowe.
+    \item \textbf{Naturalne modelowanie strumieni danych} -- w zadaniu 3 kolejne elementy strumienia są przetwarzane bez potrzeby trzymania całej kolekcji w pamięci.
+    \item \textbf{Podział wywoływań i obsługi} -- rozdzielenie mechanizmów wywołania zdarzenia od jego obsługi.
+\end{itemize}
+
+\subsection{Ograniczenia podejścia zdarzeniowego}
+
+\begin{itemize}
+    \item \textbf{Trudniejsze śledzenie przepływu sterowania} -- kod reaguje na zdarzenia asynchronicznie, przez co trudniej prześledzić, co zostanie wykonane po kolei, co utrudnia testowanie i debugowanie.
+    \item \textbf{Ryzyko braku obsługi zdarzeń} -- jeśli dla danego typu zdarzenia nie zarejestruje się handlera/obserwatora, zdarzenie jest po prostu ignorowane, co może prowadzić do trudnych do wykrycia błędów.
+\end{itemize}
+
+
+\subsection{Schematy i diagramy przebiegu zdarzeń w zadaniu 1 i 2}
+
+\begin{figure}[h!]
+    \centering
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{1.png}
+        \caption{Schemat zdarzeń w zadaniu 1}
+        \label{fig:zad1}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.50\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{2.png}
+        \caption{Diagram klas obserwatora w zadaniu 2}
+        \label{fig:zad2}
+    \end{minipage}
+\end{figure}
+
+
+
+\end{document}
